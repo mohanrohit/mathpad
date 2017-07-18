@@ -1,0 +1,214 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+        <title>Mathpad</title>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Place favicon.ico in the root directory -->
+
+        <!-- from html boilerplate -->
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <script src="js/vendor/modernizr-2.8.3.min.js"></script>
+
+        <!-- for this application -->
+        <link rel="stylesheet" href="css/bootstrap-3.3.6.min.css">
+        <link rel="stylesheet" href="css/mathquill.css">
+
+        <script src="js/vendor/jquery-1.12.0.min.js"></script>
+        <script src="js/vendor/bootstrap-3.3.6.min.js"></script>
+        <script src="js/vendor/knockout-3.4.2.min.js"></script>
+        <script src="js/vendor/underscore-1.8.3.min.js"></script>
+        <script src="js/vendor/sprintf-0.6.js"></script>
+
+        <!-- MathQuill -->
+        <script src="js/vendor/mathquill.js"></script>
+        <script>
+          var MQ = MathQuill.getInterface(2);
+        </script>
+
+        <!-- MathJax -->
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+        <script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
+        <script>
+        tinymce.init({
+          selector: 'div#content',
+          branding: false,
+          statusbar: false,
+          plugins: 'image imagetools paste link print preview',
+          toolbar: [
+            'cut copy paste undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image',
+            'bold italic underline superscript subscript strikethrough | h1 heading2 heading3'
+          ],
+          font_formats: "Proportional=liberation sans,arial,helvetica,sans-serif;Monospace=liberation mono,courier new,source code pro, monospace",
+          paste_data_images: true,
+          image_advtab: true
+        });
+        </script>
+
+        <style>
+        html, body
+        {
+          height: 100%;
+        }
+
+        div#content
+        {
+          height: 100%;
+        }
+
+        div#formula-div
+        {
+          margin-bottom: 8px;
+        }
+
+        div#formula-title span
+        {
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+          margin-left: 0px;
+        }
+
+        div#formula-body
+        {
+          border: 1px solid #e0e0e0; /*silver;*/
+        }
+
+        div#formula-body span#formula
+        {
+          width: 100%;
+          font-size: 1.5em;
+          border-radius: 2px;
+          border: 1px solid #f0f0f0;
+          padding-top: 8px;
+          padding-bottom: 8px;
+        }
+
+        div#preview-div
+        {
+          margin-bottom: 8px;
+        }
+
+        div#preview-title span
+        {
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+          margin-left: 0px;
+        }
+
+        div#preview-body
+        {
+          border: 1px solid silver;
+        }
+
+        div#preview-body span#latex
+        {
+          width: 100%;
+          font-family: monospace;
+        }
+
+        /*
+        .mq-editable-field,
+        .mq-math-mode .mq-editable-field
+        {
+          border: none;
+          background-color: #e0e0e0;
+        }
+        .mq-editable-field.mq-focused,
+        .mq-math-mode .mq-editable-field.mq-focused
+        {
+          -webkit-box-shadow: #8bd 0 0 1px 2px, inset #6ae 0 0 2px 0;
+          -moz-box-shadow: #8bd 0 0 1px 2px, inset #6ae 0 0 2px 0;
+          box-shadow: #8bd 0 0 1px 2px, inset #6ae 0 0 2px 0;
+          /*border-color: #709AC0;*/
+          border-radius: 1px;
+          border: none;
+        }
+        */
+}
+        </style>
+    </head>
+
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+        <div class="nav">
+          <!-- for when you want to put in some meta info -->
+        </div>
+        <div class="container-fluid" style="margin-top: 32px">
+          <div id="editor" class="col-xs-7">
+            <div id="content" style="/*border: 1px dotted green*/"></div>
+          </div>
+          <div id="wysiwyg-math" class="col-xs-5" style="/*border: 1px dotted yellow*/">
+            <div id="formula-div">
+              <div class="panel-title" id="formula-title"><span class="label label-primary">Formula to insert</span></div>
+              <div class="panel-body" id="formula-body">
+                <span id="formula"></span>
+              </div>
+            </div>
+
+            <div id="preview-div">
+              <div class="panel-title" id="preview-title"><span class="label label-default">Preview</span></div>
+              <div class="panel-body" id="preview-body">
+                <div style="margin-bottom: 8px">
+                  <button class="btn btn-default btn-xs" style="width: 60px; disable: true">LaTeX</button>
+                  <span id="latex" data-bind="text: latex"></span>
+                </div>
+                
+                <div style="margin-top: 8px">
+                  <button class="btn btn-warning btn-xs" data-bind="click: previewFormula"style="width: 60px">Image</button>
+                  <img data-bind="attr: {src: imageUrl}"></img>
+                </div>
+              </div>
+            </div>
+
+            <div id="commands-div">
+              <button class="btn btn-success btn-sm" style="width: 20%" data-bind="click: insertFormula">INSERT</button>
+              <button class="btn btn-warning btn-sm" style="width: 20%" data-bind="click: editFormula">EDIT</button>
+            </div>
+          </div>
+        </div>
+
+        <script>window.jQuery || document.write('<script src="jquery-1.9.1.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <script>
+          function setWidgetSize(widgetId, width, height)
+          {
+            var widget = document.getElementById(widgetId);
+            if (!widget)
+            {
+              return;
+            }
+
+            widget.style.width = width ? width : widget.style.width;
+            widget.style.height = height ? height : widget.style.height;
+          }
+
+          function init()
+          {
+            setWidgetSize("content", 0, "700px");
+            setWidgetSize("preview", 0, "700px");
+          }
+
+          init();
+        </script>
+
+        <script src="js/MathViewModel.js"></script>
+        <script>
+          mathViewModel = new MathViewModel();
+          ko.applyBindings(mathViewModel, document.getElementById("wysiwyg-math"));
+        </script>
+    </body>
+</html>
