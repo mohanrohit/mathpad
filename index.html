@@ -36,21 +36,46 @@
         <!-- MathJax -->
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
 
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            tex2jax: {
+              inlineMath: [
+                ['$','$'],
+                ['\\(','\\)']
+              ]
+            }
+          });
+        </script>
+
         <script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
+
         <script>
-        tinymce.init({
-          selector: 'div#content',
-          branding: false,
-          statusbar: false,
-          plugins: 'image imagetools paste link print preview',
-          toolbar: [
-            'cut copy paste undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image',
-            'bold italic underline superscript subscript strikethrough | h1 heading2 heading3'
-          ],
-          font_formats: "Proportional=liberation sans,arial,helvetica,sans-serif;Monospace=liberation mono,courier new,source code pro, monospace",
-          paste_data_images: true,
-          image_advtab: true
-        });
+          function onKeyPressed(e)
+          {
+            console.log("key pressed: " + e);
+          }
+
+          // called when the editor is first initialized
+          function onInitInstance(editor)
+          {
+            editor.on("keypress", onKeyPressed);
+          }
+
+          tinymce.init({
+            selector: 'div#content',
+            branding: false,
+            statusbar: false,
+            inline: true,
+            init_instance_callback: onInitInstance,
+            plugins: 'image imagetools paste link print preview',
+            toolbar: [
+              'cut copy paste undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image',
+              'bold italic underline superscript subscript strikethrough | h1 heading2 heading3'
+            ],
+            font_formats: "Proportional=liberation sans,arial,helvetica,sans-serif;Monospace=liberation mono,courier new,source code pro, monospace",
+            paste_data_images: true,
+            image_advtab: true
+          });
         </script>
 
         <style>
@@ -62,6 +87,7 @@
         div#content
         {
           height: 100%;
+          border: 1px solid #f0f0f0;
         }
 
         div#formula-div
@@ -210,5 +236,7 @@
           mathViewModel = new MathViewModel();
           ko.applyBindings(mathViewModel, document.getElementById("wysiwyg-math"));
         </script>
+
+        <p>the quad formula is `\frac{-b \pm \sqrt{b^2-4ac}}{2a}`</p>
     </body>
 </html>
