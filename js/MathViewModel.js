@@ -20,7 +20,7 @@ function MathViewModel()
 
     self.insertFormula = function()
     {
-      var result = sprintf('<img src="%s" style="margin-top: -3px; vertical-align: middle"></img>', self.makeImageUrl());
+      var result = sprintf('<img src="%s" style="margin-top: -3px; vertical-align: middle" onclick="mathViewModel.editFormula()"></img>', self.makeImageUrl());
 
       tinymce.execCommand("mceInsertContent", false, result);
     };
@@ -28,12 +28,7 @@ function MathViewModel()
     self.editFormula = function()
     {
       var selection = tinymce.activeEditor.selection;
-      if (!selection)
-      {
-        return;
-      }
-
-      if (!selection.selectedRange)
+      if (!selection || !selection.selectedRange)
       {
         return;
       }

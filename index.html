@@ -52,7 +52,10 @@
         <script>
           function onKeyPressed(e)
           {
-            console.log("key pressed: " + e);
+            if (e.keyCode == 32)
+            {
+              MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+            }
           }
 
           // called when the editor is first initialized
@@ -62,15 +65,17 @@
           }
 
           tinymce.init({
-            selector: 'div#content',
+            selector: 'div#editor-content',
             branding: false,
             statusbar: false,
+            menubar: false,
             inline: true,
+            fixed_toolbar_container: 'div#editor-toolbar',
             init_instance_callback: onInitInstance,
             plugins: 'image imagetools paste link print preview',
             toolbar: [
-              'cut copy paste undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image',
-              'bold italic underline superscript subscript strikethrough | h1 heading2 heading3'
+              //'cut copy paste undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image',
+              'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | formath1 h2 h3 | image imagetools'
             ],
             font_formats: "Proportional=liberation sans,arial,helvetica,sans-serif;Monospace=liberation mono,courier new,source code pro, monospace",
             paste_data_images: true,
@@ -84,7 +89,7 @@
           height: 100%;
         }
 
-        div#content
+        div#editor-content
         {
           height: 100%;
           border: 1px solid #f0f0f0;
@@ -139,26 +144,6 @@
           width: 100%;
           font-family: monospace;
         }
-
-        /*
-        .mq-editable-field,
-        .mq-math-mode .mq-editable-field
-        {
-          border: none;
-          background-color: #e0e0e0;
-        }
-        .mq-editable-field.mq-focused,
-        .mq-math-mode .mq-editable-field.mq-focused
-        {
-          -webkit-box-shadow: #8bd 0 0 1px 2px, inset #6ae 0 0 2px 0;
-          -moz-box-shadow: #8bd 0 0 1px 2px, inset #6ae 0 0 2px 0;
-          box-shadow: #8bd 0 0 1px 2px, inset #6ae 0 0 2px 0;
-          /*border-color: #709AC0;*/
-          border-radius: 1px;
-          border: none;
-        }
-        */
-}
         </style>
     </head>
 
@@ -172,10 +157,14 @@
           <!-- for when you want to put in some meta info -->
         </div>
         <div class="container-fluid" style="margin-top: 32px">
-          <div id="editor" class="col-xs-7">
-            <div id="content" style="/*border: 1px dotted green*/"></div>
+          <div class="editor" class="col-xs-7">
+            <div id="editor-toolbar" class="col-xs-7" style="padding: 0; height: 40px; display: block">
+            </div>
+            <div id="editor-content" class="col-xs-7">
+              <!--<div id="content"></div>-->
+            </div>
           </div>
-          <div id="wysiwyg-math" class="col-xs-5" style="/*border: 1px dotted yellow*/">
+          <div id="wysiwyg-math" class="col-xs-5">
             <div id="formula-div">
               <div class="panel-title" id="formula-title"><span class="label label-primary">Formula to insert</span></div>
               <div class="panel-body" id="formula-body">
@@ -187,7 +176,7 @@
               <div class="panel-title" id="preview-title"><span class="label label-default">Preview</span></div>
               <div class="panel-body" id="preview-body">
                 <div style="margin-bottom: 8px">
-                  <button class="btn btn-default btn-xs" style="width: 60px; disable: true">LaTeX</button>
+                  <button class="btn btn-default btn-xs" style="width: 60px" disabled>LaTeX</button>
                   <span id="latex" data-bind="text: latex"></span>
                 </div>
                 
@@ -224,7 +213,7 @@
 
           function init()
           {
-            setWidgetSize("content", 0, "700px");
+            setWidgetSize("editor-content", 0, "700px");
             setWidgetSize("preview", 0, "700px");
           }
 
