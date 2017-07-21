@@ -40,14 +40,14 @@
           MathJax.Hub.Config({
             tex2jax: {
               inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
+                ["$","$"],
+                ["\\(","\\)"]
               ]
             }
           });
         </script>
 
-        <script src='https://cdn.tinymce.com/4/tinymce.min.js'></script>
+        <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
 
         <script>
           function onKeyPressed(e)
@@ -58,24 +58,37 @@
             }
           }
 
+          function onBlur(e)
+          {
+            // get the toolbar div and set its display property to visible
+            var toolbar = $("#editor-toolbar div[role='application']");
+
+            if (!toolbar)
+            {
+              return;
+            }
+
+            toolbar[0].style.display = "block";
+          }
+
           // called when the editor is first initialized
           function onInitInstance(editor)
           {
             editor.on("keypress", onKeyPressed);
+            editor.on("blur", onBlur);
           }
 
           tinymce.init({
-            selector: 'div#editor-content',
+            selector: "div#editor-content",
             branding: false,
             statusbar: false,
             menubar: false,
             inline: true,
-            fixed_toolbar_container: 'div#editor-toolbar',
+            fixed_toolbar_container: "div#editor-toolbar",
             init_instance_callback: onInitInstance,
-            plugins: 'image imagetools paste link print preview',
+            plugins: "image imagetools paste link print preview",
             toolbar: [
-              //'cut copy paste undo redo | styleselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image',
-              'bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | formath1 h2 h3 | image imagetools'
+              "bold italic underline strikethrough | cut copy paste undo redo | styleselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image imagetools"
             ],
             font_formats: "Proportional=liberation sans,arial,helvetica,sans-serif;Monospace=liberation mono,courier new,source code pro, monospace",
             paste_data_images: true,
@@ -104,12 +117,17 @@
         {
           border-bottom-left-radius: 0;
           border-bottom-right-radius: 0;
-          margin-left: 0px;
+          margin-left: 8px;
         }
 
         div#formula-body
         {
           border: 1px solid #e0e0e0; /*silver;*/
+          /*
+          padding: 0;
+          padding-left: 8px;
+          padding-right: 8px;
+          */
         }
 
         div#formula-body span#formula
@@ -131,7 +149,7 @@
         {
           border-bottom-left-radius: 0;
           border-bottom-right-radius: 0;
-          margin-left: 0px;
+          margin-left: 8px;
         }
 
         div#preview-body
@@ -194,7 +212,7 @@
           </div>
         </div>
 
-        <script>window.jQuery || document.write('<script src="jquery-1.9.1.js"><\/script>')</script>
+        <script>window.jQuery || document.write("<script src=\"jquery-1.9.1.js\"><\/script>")</script>
         <script src="js/plugins.js"></script>
         <script src="js/main.js"></script>
 
