@@ -3,32 +3,83 @@ html, body
   height: 100%;
 }
 
+.mq-focused
+{
+    border-color: none;
+}
+
+.mq-hasCursor
+{
+    border: none;
+}
+
+div#editor-toolbar
+{
+    padding: 0;
+    display: block;
+}
+
 div#editor-content
 {
   height: 100%;
   border: 1px solid #f0f0f0;
+  padding: 0.25in;
+}
+
+div#editor-content.mce-content-body
+{
+    border: 1px solid silver;
+}
+
+div#editor-content.mce-edit-focus
+{
+    border: 1px solid grey;
+    outline: none;
+}
+
+div#math-sidebar
+{
+    height: 700px;
+    /*
+    padding-top: 24px;
+    padding-bottom: 24px;
+    */
+    padding: 0;
+    background-color: #f0f0f0;
+    border: 1px solid grey;
+}
+
+div#math-sidebar-title
+{
+    padding: 4px;
+    background-color: lightgrey;
+}
+
+div#math-sidebar-title h5
+{
+    margin: 0;
+}
+
+div#math-sidebar-content
+{
+    padding: 16px;
 }
 
 div#formula-div
 {
-  margin-bottom: 8px;
+  /*margin-bottom: 8px;*/
 }
 
 div#formula-title span
 {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  margin-left: 8px;
 }
 
 div#formula-body
 {
-  border: 1px solid #e0e0e0; /*silver;*/
-  /*
   padding: 0;
-  padding-left: 8px;
-  padding-right: 8px;
-  */
+  border: 1px solid silver;
 }
 
 div#formula-body span#formula
@@ -39,6 +90,8 @@ div#formula-body span#formula
   border: 1px solid #f0f0f0;
   padding-top: 8px;
   padding-bottom: 8px;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 div#preview-div
@@ -55,7 +108,9 @@ div#preview-title span
 
 div#preview-body
 {
-  border: 1px solid silver;
+  border-bottom: 1px solid silver;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 
 div#preview-body span#latex

@@ -35,7 +35,8 @@
         </script>
 
         <!-- TinyMCE editor -->
-        <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
+        <!--<script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>-->
+        <script src="tinymce/js/tinymce/tinymce.js"></script>
 
         <script>
           function onEditorBlur(e)
@@ -59,17 +60,59 @@
             editor.on("blur", onEditorBlur);
           }
 
+          function setup(editor)
+          {
+            function addMathToolbarButton()
+            {
+              var buttonOptions =
+              {
+                icon: "settings",
+
+                onclick: function()
+                {
+                  var editorDiv = $("#editor");
+                  var sidebarDiv = $("#math-sidebar");
+
+                  if (sidebarDiv.css("display") == "none")
+                  {
+                    sidebarDiv.show();
+
+                    sidebarDiv.addClass("col-xs-4");
+
+                    editorDiv.removeClass("col-xs-12");
+                    editorDiv.addClass("col-xs-8");
+                  }
+                  else
+                  {
+                    sidebarDiv.hide();
+
+                    sidebarDiv.removeClass("col-xs-4");
+
+                    editorDiv.removeClass("col-xs-8");
+                    editorDiv.addClass("col-xs-12");
+                  }
+                }
+              };
+
+              editor.addButton("math", buttonOptions);
+            }
+
+            addMathToolbarButton();
+          }
+
           tinymce.init({
             selector: "div#editor-content",
             branding: false,
             statusbar: false,
             menubar: false,
             inline: true,
+            auto_focus: true,
             fixed_toolbar_container: "div#editor-toolbar",
             init_instance_callback: onInitInstance,
+            setup: setup,
             plugins: "image imagetools paste link print preview",
             toolbar: [
-              "bold italic underline strikethrough | cut copy paste undo redo | styleselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image imagetools"
+              "bold italic underline strikethrough | cut copy paste undo redo | styleselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image imagetools | math"
             ],
             font_formats: "Proportional=liberation sans,arial,helvetica,sans-serif;Monospace=liberation mono,courier new,source code pro, monospace",
             paste_data_images: true,
@@ -87,42 +130,50 @@
         <div class="nav">
           <!-- for when you want to put in some meta info -->
         </div>
-        <div class="container-fluid" style="margin-top: 32px">
-          <div class="editor" class="col-xs-7">
-            <div id="editor-toolbar" class="col-xs-7" style="padding: 0; height: 40px; display: block">
-            </div>
-            <div id="editor-content" class="col-xs-7">
-              <!--<div id="content"></div>-->
-            </div>
-          </div>
-          <div id="wysiwyg-math" class="col-xs-5">
-            <div id="formula-div">
-              <div class="panel-title" id="formula-title"><span class="label label-primary">Formula to insert</span></div>
-              <div class="panel-body" id="formula-body">
-                <span id="formula"></span>
+        <div class="container-fluid">
+            <div id="editor" class="col-xs-8">
+              <div id="editor-toolbar">
+                <!-- for the TinyMCE toolbar -->
+              </div>
+              <div id="editor-content">
+                <!-- for the TinyMCE editor -->
               </div>
             </div>
+            <div id="math-sidebar" class="col-xs-4">
+              <div id="math-sidebar-title">
+                <h5><strong>Insert formula</strong></h5>
+              </div>
+              <div id="math-sidebar-content">
+                <div id="wysiwyg-math">
+                  <div id="formula-div">
+                    <div class="panel-title" id="formula-title"><span class="label label-primary">Formula to insert</span></div>
+                    <div class="panel-body" id="formula-body">
+                      <span id="formula"></span>
+                    </div>
+                  </div>
+                  <span style="font-size: 0.8em">Powered by <a href="https://mathquill.com">MathQuill</a></span>
 
-            <div id="preview-div">
-              <div class="panel-title" id="preview-title"><span class="label label-default">Preview</span></div>
-              <div class="panel-body" id="preview-body">
-                <div style="margin-bottom: 8px">
-                  <button class="btn btn-default btn-xs" style="width: 60px" disabled>LaTeX</button>
-                  <span id="latex" data-bind="text: latex"></span>
-                </div>
-                
-                <div style="margin-top: 8px">
-                  <button class="btn btn-warning btn-xs" data-bind="click: previewFormula"style="width: 60px">Image</button>
-                  <img data-bind="attr: {src: imageUrl}"></img>
+                  <div id="preview-div">
+                    <div class="panel-body" id="preview-body">
+                      <div style="margin-bottom: 8px">
+                        <button class="btn btn-xs" style="width: 60px; cursor: context-menu">LaTeX</button>
+                        <span id="latex" data-bind="text: latex"></span>
+                      </div>
+                      
+                      <div style="margin-top: 8px">
+                        <button class="btn btn-warning btn-xs" data-bind="click: previewFormula"style="width: 60px">Image</button>
+                        <img data-bind="attr: {src: imageUrl}"></img>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div id="commands-div">
+                    <button class="btn btn-success btn-sm" style="width: 20%" data-bind="click: insertFormula">INSERT</button>
+                    <button class="btn btn-warning btn-sm" style="width: 20%" data-bind="click: editFormula">EDIT</button>
+                  </div>
                 </div>
               </div>
             </div>
-
-            <div id="commands-div">
-              <button class="btn btn-success btn-sm" style="width: 20%" data-bind="click: insertFormula">INSERT</button>
-              <button class="btn btn-warning btn-sm" style="width: 20%" data-bind="click: editFormula">EDIT</button>
-            </div>
-          </div>
         </div>
 
         <script>window.jQuery || document.write("<script src=\"jquery-1.9.1.js\"><\/script>")</script>
