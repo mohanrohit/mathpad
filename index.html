@@ -20,6 +20,7 @@
         <!-- for this application -->
         <link rel="stylesheet" href="css/bootstrap-3.3.6.min.css">
         <link rel="stylesheet" href="css/mathquill.css">
+        <link rel="stylesheet" href="css/mathpad.css">
 
         <script src="js/vendor/jquery-1.12.0.min.js"></script>
         <script src="js/vendor/bootstrap-3.3.6.min.js"></script>
@@ -33,34 +34,15 @@
           var MQ = MathQuill.getInterface(2);
         </script>
 
-        <!-- MathJax -->
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-
-        <script type="text/x-mathjax-config">
-          MathJax.Hub.Config({
-            tex2jax: {
-              inlineMath: [
-                ["$","$"],
-                ["\\(","\\)"]
-              ]
-            }
-          });
-        </script>
-
+        <!-- TinyMCE editor -->
         <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script>
 
         <script>
-          function onKeyPressed(e)
+          function onEditorBlur(e)
           {
-            if (e.keyCode == 32)
-            {
-              MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
-            }
-          }
-
-          function onBlur(e)
-          {
-            // get the toolbar div and set its display property to visible
+            // get the toolbar div and force set its visibility,
+            // so it's always shown. the toolbar div has a "role"
+            // attribute that's set to "application".
             var toolbar = $("#editor-toolbar div[role='application']");
 
             if (!toolbar)
@@ -74,8 +56,7 @@
           // called when the editor is first initialized
           function onInitInstance(editor)
           {
-            editor.on("keypress", onKeyPressed);
-            editor.on("blur", onBlur);
+            editor.on("blur", onEditorBlur);
           }
 
           tinymce.init({
@@ -95,74 +76,6 @@
             image_advtab: true
           });
         </script>
-
-        <style>
-        html, body
-        {
-          height: 100%;
-        }
-
-        div#editor-content
-        {
-          height: 100%;
-          border: 1px solid #f0f0f0;
-        }
-
-        div#formula-div
-        {
-          margin-bottom: 8px;
-        }
-
-        div#formula-title span
-        {
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
-          margin-left: 8px;
-        }
-
-        div#formula-body
-        {
-          border: 1px solid #e0e0e0; /*silver;*/
-          /*
-          padding: 0;
-          padding-left: 8px;
-          padding-right: 8px;
-          */
-        }
-
-        div#formula-body span#formula
-        {
-          width: 100%;
-          font-size: 1.5em;
-          border-radius: 2px;
-          border: 1px solid #f0f0f0;
-          padding-top: 8px;
-          padding-bottom: 8px;
-        }
-
-        div#preview-div
-        {
-          margin-bottom: 8px;
-        }
-
-        div#preview-title span
-        {
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
-          margin-left: 8px;
-        }
-
-        div#preview-body
-        {
-          border: 1px solid silver;
-        }
-
-        div#preview-body span#latex
-        {
-          width: 100%;
-          font-family: monospace;
-        }
-        </style>
     </head>
 
     <body>

@@ -1,0 +1,65 @@
+html, body
+{
+  height: 100%;
+}
+
+div#editor-content
+{
+  height: 100%;
+  border: 1px solid #f0f0f0;
+}
+
+div#formula-div
+{
+  margin-bottom: 8px;
+}
+
+div#formula-title span
+{
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-left: 8px;
+}
+
+div#formula-body
+{
+  border: 1px solid #e0e0e0; /*silver;*/
+  /*
+  padding: 0;
+  padding-left: 8px;
+  padding-right: 8px;
+  */
+}
+
+div#formula-body span#formula
+{
+  width: 100%;
+  font-size: 1.5em;
+  border-radius: 2px;
+  border: 1px solid #f0f0f0;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+div#preview-div
+{
+  margin-bottom: 8px;
+}
+
+div#preview-title span
+{
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-left: 8px;
+}
+
+div#preview-body
+{
+  border: 1px solid silver;
+}
+
+div#preview-body span#latex
+{
+  width: 100%;
+  font-family: monospace;
+}
