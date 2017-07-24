@@ -52,9 +52,11 @@
         <script>
           function onKeyPressed(e)
           {
-            if (e.keyCode == 32)
+            if (e.key == "\\")
             {
-              MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+              new LatexFieldViewModel();
+
+              e.preventDefault();
             }
           }
 
@@ -84,6 +86,7 @@
             statusbar: false,
             menubar: false,
             inline: true,
+            auto_focus: true,
             fixed_toolbar_container: "div#editor-toolbar",
             init_instance_callback: onInitInstance,
             plugins: "image imagetools paste link print preview",
@@ -170,10 +173,6 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <!-- Add your site or application content here -->
-        <div class="nav">
-          <!-- for when you want to put in some meta info -->
-        </div>
         <div class="container-fluid" style="margin-top: 32px">
           <div class="editor" class="col-xs-7">
             <div id="editor-toolbar" class="col-xs-7" style="padding: 0; height: 40px; display: block">
@@ -182,7 +181,7 @@
               <!--<div id="content"></div>-->
             </div>
           </div>
-          <div id="wysiwyg-math" class="col-xs-5">
+          <div id="wysiwyg-math" class="col-xs-5" style="display: none">
             <div id="formula-div">
               <div class="panel-title" id="formula-title"><span class="label label-primary">Formula to insert</span></div>
               <div class="panel-body" id="formula-body">
@@ -243,6 +242,8 @@
           mathViewModel = new MathViewModel();
           ko.applyBindings(mathViewModel, document.getElementById("wysiwyg-math"));
         </script>
+
+        <script src="js/LatexFieldViewModel.js"></script>
 
         <p>the quad formula is `\frac{-b \pm \sqrt{b^2-4ac}}{2a}`</p>
     </body>
