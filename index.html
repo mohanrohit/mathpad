@@ -20,6 +20,7 @@
         <!-- for this application -->
         <link rel="stylesheet" href="css/bootstrap-3.3.6.min.css">
         <link rel="stylesheet" href="css/mathquill.css">
+        <link rel="stylesheet" href="css/mathpad.css">
 
         <script src="js/vendor/jquery-1.12.0.min.js"></script>
         <script src="js/vendor/bootstrap-3.3.6.min.js"></script>
@@ -43,7 +44,9 @@
                 ["$","$"],
                 ["\\(","\\)"]
               ]
-            }
+            },
+            jax: ["input/TeX","output/HTML-CSS"],
+            displayAlign: "left"
           });
         </script>
 
@@ -52,7 +55,7 @@
         <script>
           function onKeyPressed(e)
           {
-            if (e.key == "\\")
+            if (e.key == "`")
             {
               new LatexFieldViewModel();
 
@@ -82,6 +85,7 @@
 
           tinymce.init({
             selector: "div#editor-content",
+            valid_children : '+p[div],+span[input]',
             branding: false,
             statusbar: false,
             menubar: false,
@@ -89,9 +93,9 @@
             auto_focus: true,
             fixed_toolbar_container: "div#editor-toolbar",
             init_instance_callback: onInitInstance,
-            plugins: "image imagetools paste link print preview",
+            plugins: "image imagetools paste link print preview code",
             toolbar: [
-              "bold italic underline strikethrough | cut copy paste undo redo | styleselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image imagetools"
+              "bold italic underline strikethrough | cut copy paste undo redo | styleselect | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent | image imagetools | code"
             ],
             font_formats: "Proportional=liberation sans,arial,helvetica,sans-serif;Monospace=liberation mono,courier new,source code pro, monospace",
             paste_data_images: true,
@@ -100,71 +104,6 @@
         </script>
 
         <style>
-        html, body
-        {
-          height: 100%;
-        }
-
-        div#editor-content
-        {
-          height: 100%;
-          border: 1px solid #f0f0f0;
-        }
-
-        div#formula-div
-        {
-          margin-bottom: 8px;
-        }
-
-        div#formula-title span
-        {
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
-          margin-left: 8px;
-        }
-
-        div#formula-body
-        {
-          border: 1px solid #e0e0e0; /*silver;*/
-          /*
-          padding: 0;
-          padding-left: 8px;
-          padding-right: 8px;
-          */
-        }
-
-        div#formula-body span#formula
-        {
-          width: 100%;
-          font-size: 1.5em;
-          border-radius: 2px;
-          border: 1px solid #f0f0f0;
-          padding-top: 8px;
-          padding-bottom: 8px;
-        }
-
-        div#preview-div
-        {
-          margin-bottom: 8px;
-        }
-
-        div#preview-title span
-        {
-          border-bottom-left-radius: 0;
-          border-bottom-right-radius: 0;
-          margin-left: 8px;
-        }
-
-        div#preview-body
-        {
-          border: 1px solid silver;
-        }
-
-        div#preview-body span#latex
-        {
-          width: 100%;
-          font-family: monospace;
-        }
         </style>
     </head>
 
@@ -172,6 +111,10 @@
         <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
+
+        <div id="latex-field-parent" style="display: block; border: 1px solid green">
+          <input type="text" id="latex-field" data-bind="value: contents, event: {keypress: onKeyPress, keydown: onKeyDown, blur: onLostFocus}"></input>
+        </div>
 
         <div class="container-fluid" style="margin-top: 32px">
           <div class="editor" class="col-xs-7">
@@ -196,7 +139,7 @@
                   <button class="btn btn-default btn-xs" style="width: 60px" disabled>LaTeX</button>
                   <span id="latex" data-bind="text: latex"></span>
                 </div>
-                
+
                 <div style="margin-top: 8px">
                   <button class="btn btn-warning btn-xs" data-bind="click: previewFormula"style="width: 60px">Image</button>
                   <img data-bind="attr: {src: imageUrl}"></img>
